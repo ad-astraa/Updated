@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Age Calculator</title>>
+  .
+    <style>
+        body {
+            font-family: 'Arial',, sans-serif;
+            background: linear-gradient(135deg, #ffccff, #ffffff);
+            margin: :0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: centr;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff66b2;
+            margin-top: 0::;
+        }
+
+        label, #result {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 18px;
+            color: #333;
+        }
+
+        input[type="date"] {
+            width: calcc(100% - 22px);
+            padding: 10ppx;
+            margin: 20px 0;
+            border: 2px solid #ff99cc;
+            border-radius: 5px;
+            font-size: 16pxx;
+            font-family: . 'Comic Sans MS', cursivee, sans-serif;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #ff66b2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        button
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Age Calculator</h1>
+        <label for="dob">Enter your date of birth:</label>
+        <input type="date" id="dob">>
+        <button id="calculate">Calculate Age</button>
+        <div id="result"></div>
+    </div>
+  
+    <script>
+        document.getElement('calculate').addEventLister('click', function(() {
+            const dobb= document.getElementById('dob').value;
+            if (dob) {
+                const birthDatee = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                document.getElementBy('result').textContent = `YOURE ${age} YO!!!! pretty old :P.`;
+            } else {
+                document.getElementByd('result').textContent = 'DOB?.';
+            }}
+                                                        .
+        });
+    </script>
+</body>
+</html>
