@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Mission Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: url('https://www.transparenttextures.com/patterns/space.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+        }
+        h1 {
+            color: #1e90ff;
+            text-shadow: 0 0 10px #1e90ff;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #1e90ff;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #1c86ee;
+        }
+        #chart-container {
+            margin-top: 20px;
+        }
+        canvas {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #feedback {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        #stage-description, #decision-description, #result-description {
+            margin-bottom: 20px;
+        }
+        .option-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .animate__animated {
+            animation-duration: 1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container animate__animated animate__fadeIn">
+        <h1>Space Mission Simulator</h1>
+        <div id="mission-stage" class="section">
+            <div id="stage-description">Select your mission type:</div>
+            <div class="option-group">
+                <button onclick="chooseMission('exploration')">Exploration Mission</button>
+                <button onclick="chooseMission('rescue')">Rescue Mission</button>
+                <button onclick="chooseMission('research')">Research Mission</button>
+            </div>
+        </div>
+        <div id="preparation-stage" class="section" style="display: none;">
+            <div id="preparation-description">Prepare for your mission:</div>
+            <div class="option-group">
+                <button onclick="prepareMission('equipment')">Choose Equipment</button>
+                <button onclick="prepareMission('crew')">Select Crew</button>
+            </div>
+        </div>
+        <div id="decision-stage" class="section" style="display: none;">
+            <div id="decision-description"></div>
+            <div class="option-group">
+                <button onclick="makeDecision('successful')">Successful</button>
+                <button onclick="makeDecision('unsuccessful')">Unsuccessful</button>
+            </div>
+        </div>
+        <div id="result-stage" class="section" style="display: none;">
+            <h2>Mission Results</h2>
+            <div id="result-description"></div>
+            <div id="chart-container">
+                <canvas id="results-chart" width="600" height="400"></canvas>
+            </div>
+            <div id="feedback"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const missionData = {
+            exploration: { success: 0, failure: 0 },
+            rescue: { success: 0, failure: 0 },
+            research: { success: 0, failure: 0 }
+        };
+
+        const missionFeedback = {
+            exploration: {
+                successful: 'Great job exploring uncharted territories!',
+                unsuccessful: 'Exploration failed. Better luck next time!'
+            },
+            rescue: {
+                successful: 'Rescue mission successful! Lives saved!',
+                unsuccessful: 'Rescue mission failed. Review the mission strategy.'
+            },
+            research: {
+                successful: 'Research completed successfully! New discoveries made',
+                unsuccessful: 'Research failed. Analyze what went wrong.'
+            }
+        };
+
+        const missionPreparation = {
+            equipment: {
+                exploration: 'Equipped with advanced scanning tools for deep space.',
+                rescue: 'Equipped with life-support and rescue gear.',
+                research: 'Equipped with state-of-the-art laboratory equipment.'
+            },
+            crew: {
+                exploration: 'Experienced astronauts with exploration expertise.',
+                rescue: 'Trained rescue team with survival skills.',
+                research: 'Specialist scientists and engineers.'
+            }
+        };
+
+        const randomEvents = [
+            'Meteor Shower: Your equipment takes some damage.',
+            'Technical Malfunction: Delay in mission progress.',
+            'Unexpected Discovery: Additional resources found.',
+            'Crew Dispute: Reduced efficiency of the crew.'
+        ];
+
+        function chooseMission(type) {
+            document.getElementById('mission-stage').style.display = 'none';
+            document.getElementById('preparation-stage').style.display = 'block';
+            document.getElementById('preparation-description').textContent = `You chose a ${type} mission. Prepare for your mission by selecting equipment or crew.`;
+            document.getElementById('preparation-stage').dataset.missionType = type;
+        }
+
+        function prepareMission(option) {
+            const type = document.getElementById('preparation-stage').dataset.missionType;
+            document.getElementById('preparation-stage').style.display = 'none';
+            document.getElementById('decision-stage').style.display = 'block';
+            const description = missionPreparation[option][type];
+            document.getElementById('decision-description').textContent = `Mission preparation complete. ${description} Will your mission be successful or unsuccessful?`;
+        }
+
+        function makeDecision(outcome) {
+            const type = document.getElementById('preparation-stage').dataset.missionType;
+            missionData[type][outcome]++;
+            const event = randomEvents[Math.floor(Math.random() * randomEvents.length)];
+            const feedback = missionFeedback[type][outcome];
+            document.getElementById('decision-stage').style.display = 'none';
+            document.getElementById('result-stage').style.display = 'block';
+            document.getElementById('result-description').textContent = 
+                `Mission Type: ${type.charAt(0).toUpperCase() + type.slice(1)}\n` +
+                `Event: ${event}\n` +
+                feedback;
+            displayResults(type);
+        }
+
+        function displayResults(type) {
+            const ctx = document.getElementById('results-chart').getContext('2d');
+            const data = missionData[type];
+            const total = data.success + data.failure;
+            const successRate = (data.success / total * 100).toFixed(2);
+            const failureRate = (data.failure / total * 100).toFixed(2)
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Success', 'Failure'],
+                    datasets: [{
+                        data: [data.success, data.failure],
+                        backgroundColor: ['#1e90ff', '#ff4500']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    const label = tooltipItem.label || '';
+                                    return label + ': ' + tooltipItem.raw;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('mission-stage').style.display = 'block';
+            document.getElementById('preparation-stage').style.display = 'none';
+            document.getElementById('decision-stage').style.display = 'none';
+            document.getElementById('result-stage').style.display = 'none';
+        })
+    </script>
+</body>
+</html>
