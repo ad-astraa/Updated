@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Exploration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            padding: 20px;
+            background-color: #1e1e1e;
+            width: 100%;
+            text-align: center;
+        }
+        .content {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            padding: 20px;
+        }
+        .planets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(5, auto);
+            gap: 10px;
+            width: 50%;
+            align-items: center;
+        }
+        .planet {
+            margin: 10px;
+            padding: 20px;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+            color: #000;
+        }
+        .planet:hover {
+            transform: scale(1.1);
+        }
+        .info {
+            margin-left: 20px;
+            width: 50%;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            display: none;
+        }
+        .info.visible {
+            display: block;
+        }
+        .planet.mercury { background-color: #a9a9a9; }
+        .planet.venus { background-color: #ffcc00; }
+        .planet.earth { background-color: #00bfff; }
+        .planet.mars { background-color: #ff4500; }
+        .planet.jupiter { background-color: #ff7f50; }
+        .planet.saturn { background-color: #ffd700; }
+        .planet.uranus { background-color: #40e0d0; }
+        .planet.neptune { background-color: #1e90ff; }
+        .planet.sun { background-color: #ffdf00; }
+        .planet.moon { background-color: #d3d3d3; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Solar System Exploration</h1>
+    </header>
+    <section class="introduction">
+        <p> Click on a celestial body to learn more about it.</p>
+    </section>
+    <div class="content">
+        <div class="planets">
+            <div class="planet sun" onclick="showInfo('sun')">Sun</div>
+            <div class="planet mercury" onclick="showInfo('mercury')">Mercury</div>
+            <div class="planet venus" onclick="showInfo('venus')">Venus</div>
+            <div class="planet earth" onclick="showInfo('earth')">Earth</div>
+            <div class="planet mars" onclick="showInfo('mars')">Mars</div>
+            <div class="planet jupiter" onclick="showInfo('jupiter')">Jupiter</div>
+            <div class="planet saturn" onclick="showInfo('saturn')">Saturn</div>
+            <div class="planet uranus" onclick="showInfo('uranus')">Uranus</div>
+            <div class="planet neptune" onclick="showInfo('neptune')">Neptune</div>
+            <div class="planet moon" onclick="showInfo('moon')">Moon</div>
+        </div>
+        <div class="info" id="info">
+            <h2 id="planetName"></h2>
+            <p id="description"></p>
+            <h3>Interesting Facts:</h3>
+            <ul id="facts"></ul>
+        </div>
+    </div>
+    <script>
+        const celestialBodies = {
+            sun: {
+                name: "Sun",
+                description: "The Sun is the star at the center of our solar system. It is a nearly perfect sphere of hot plasma, radiating energy mainly as visible light and infrared radiation.",
+                facts: [
+                    "The Sun is about 109 times the diameter of Earth.",
+                    "It contains 99.86% of the mass of the solar system.",
+                    "The Sun's core temperature is about 15 million degrees Celsius."
+                ]
+            },
+            mercury: {
+                name: "Mercury",
+                description: "Mercury is the smallest planet in our solar system. It's just a little bigger than Earth's Moon. Mercury is the closest planet to the sun and doesn't have any moons.",
+                facts: [
+                    "A day on Mercury is equivalent to 59 Earth days.",
+                    "Mercury has a very thin atmosphere.",
+                    "Temperatures on Mercury range from -173°C at night to 427°C during the day."
+                ]
+            },
+            venus: {
+                name: "Venus",
+                description: "Venus is the hottest planet in our solar system. Its thick atmosphere traps heat, making the surface hot enough to melt lead. Venus has no moons.",
+                facts: [
+                    "A day on Venus is longer than a year on Venus.",
+                    "Venus rotates in the opposite direction to most planets.",
+                    "The surface temperature of Venus is about 465°C."
+                ]
+            },
+            earth: {
+                name: "Earth",
+                description: "Earth is the only planet known to support life. It has one moon and is the third planet from the sun. Earth's atmosphere protects us from harmful solar radiation.",
+                facts: [
+                    "70% of Earth's surface is covered by water.",
+                    "Earth's atmosphere is composed of 78% nitrogen and 21% oxygen.",
+                    "Earth has a powerful magnetic field."
+                ]
+            },
+            mars: {
+                name: "Mars",
+                description: "Mars is known as the Red Planet due to its reddish appearance. It has two small moons, Phobos and Deimos. Mars has the largest volcano in the solar system, Olympus Mons.",
+                facts: [
+                    "Mars has the largest dust storms in the solar system.",
+                    "Mars' atmosphere is mostly carbon dioxide.",
+                    "Mars has seasons like Earth due to its tilt."
+                ]
+            },
+            jupiter: {
+                name: "Jupiter",
+                description: "Jupiter is the largest planet in our solar system. It has a Great Red Spot, which is a giant storm. Jupiter has 79 known moons, including the largest moon in the solar system, Ganymede.",
+                facts: [
+                    "Jupiter's Great Red Spot is larger than Earth.",
+                    "Jupiter has a very strong magnetic field.",
+                    "Jupiter is mostly composed of hydrogen and helium."
+                ]
+            },
+            saturn: {
+                name: "Saturn",
+                description: "Saturn is famous for its rings made of ice and rock. It is the second-largest planet in our solar system and has 82 known moons, including Titan, which is larger than Mercury.",
+                facts: [
+                    "Saturn's rings are composed mostly of water ice.",
+                    "Saturn could float in water because it is mostly made of gas.",
+                    "Saturn's day is about 10.7 hours long."
+                ]
+            },
+            uranus: {
+                name: "Uranus",
+                description: "Uranus rotates on its side, which makes it unique among the planets. It has 27 known moons and faint rings. Uranus is often called an 'ice giant' due to its cold temperature.",
+                facts: [
+                    "Uranus' blue color is due to methane in its atmosphere.",
+                    "Uranus has the coldest atmosphere of any planet in the solar system.",
+                    "A season on Uranus lasts 21 years."
+                ]
+            },
+            neptune: {
+                name: "Neptune",
+                description: "Neptune is known for its strong winds and storms. It has 14 known moons, including Triton, which is slowly getting closer to Neptune and may eventually crash into it.",
+                facts: [
+                    "Neptune's winds can reach up to 2,100 km/h.",
+                    "Neptune has a Great Dark Spot similar to Jupiter's Great Red Spot.",
+                    "Neptune's atmosphere is composed mainly of hydrogen, helium, and methane."
+                ]
+            },
+            moon: {
+                name: "Moon",
+                description: "The Moon is Earth's only natural satellite. It is the fifth largest moon in the solar system and is the largest relative to the size of its planet.",
+                facts: [
+                    "The Moon is moving away from Earth at a rate of 3.8 cm per year.",
+                    "The Moon has no atmosphere.",
+                    "The same side of the Moon always faces Earth."
+                ]
+            }
+        };
+
+        function showInfo(body) {
+            const info = document.getElementById('info');
+            const planetName = document.getElementById('planetName');
+            const description = document.getElementById('description')
+            const facts = document.getElementById('facts');
+
+            planetName.textContent = celestialBodies[body].name;
+            description.textContent = celestialBodies[body].description;
+
+            facts.innerHTML = '';
+            celestialBodies[body].facts.forEach(fact => {
+                const li = document.createElement('li');
+                li.textContent = fact;
+                facts.appendChild(li);
+            });
+
+            info.classList.add('visible')
+        }
+    </script>
+</body>
+</html>
